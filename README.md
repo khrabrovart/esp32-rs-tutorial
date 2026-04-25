@@ -1,13 +1,16 @@
 # ESP32 Rust Tutorial
 
-A small ESP32 tutorial project.
+A set of ESP32 Rust tutorials.
 
 ## What it does
 
-This project currently includes:
+This project includes:
 
-- `ch1_blink_led` - blinks LED on `GPIO4`
-- `ch2_button_and_led` - turns LED on `GPIO4` on/off from a button on `GPIO13` (currently used by `src/main.rs`)
+- `ch1_blink_led` — blinks the LED on `GPIO4`
+- `ch2_button_and_led` — holds the LED on `GPIO4` on while a button on `GPIO13` is pressed
+- `ch2_2_mini_table_lamp` — toggles the LED on `GPIO4` on each press of the button on `GPIO13` (edge-style behavior)
+
+`src/main.rs` currently runs `ch2_2_mini_table_lamp`.
 
 Core libraries:
 
@@ -52,21 +55,27 @@ cargo run
 
 ## Switching chapters
 
-To change the active lesson, update `src/main.rs` to call the desired module:
+Each chapter exposes `CHAPTER_NAME`, `setup`, and `update`. `main.rs` takes peripherals once, builds state with `setup`, then loops calling `update` (with a short delay between iterations).
+
+To run another lesson, change the glob import in `src/main.rs` to the module you want:
 
 ```rust
-if let Err(e) = esp32_tutorial::ch1_blink_led::run(peripherals).await {
-    log::error!("Critical error: {:?}", e);
-}
+use esp32_tutorial::ch1_blink_led::*;
 ```
 
 or:
 
 ```rust
-if let Err(e) = esp32_tutorial::ch2_button_and_led::run(peripherals).await {
-    log::error!("Critical error: {:?}", e);
-}
+use esp32_tutorial::ch2_button_and_led::*;
 ```
+
+or:
+
+```rust
+use esp32_tutorial::ch2_2_mini_table_lamp::*;
+```
+
+`start()` in `main.rs` already uses `CHAPTER_NAME`, `setup`, and `update` from that import, so no other code changes are required when switching.
 
 ## Release build
 
