@@ -1,4 +1,4 @@
-use crate::utils::buttons;
+use crate::utils::button;
 use anyhow::Result;
 use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
@@ -25,7 +25,7 @@ pub fn setup(peripherals: Peripherals) -> Result<State> {
 }
 
 pub async fn update(state: &mut State) -> Result<()> {
-    if buttons::button_pressed(&state.btn_pin).await {
+    if button::button_pressed(&state.btn_pin).await {
         if state.button_pressed {
             return Ok(());
         }
