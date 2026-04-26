@@ -13,8 +13,8 @@ pub const CHAPTER_NAME: &str = "ch6_led_pixel";
 
 const NUM_LEDS: usize = 8;
 const ACTIVE_BRIGHTNESS: u8 = 32;
-const MIN_STEP_MS: u64 = 5;
-const MAX_STEP_MS: u64 = 1000;
+const MIN_STEP_MS: u64 = 10;
+const MAX_STEP_MS: u64 = 500;
 
 pub struct State {
     ws2812_pin: TxChannelDriver<'static>,
