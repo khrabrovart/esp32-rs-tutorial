@@ -9,6 +9,7 @@ use esp_idf_svc::hal::ledc::config::Resolution;
 use esp_idf_svc::hal::ledc::{LedcDriver, LedcTimerDriver, LowSpeed};
 use esp_idf_svc::hal::peripherals::Peripherals;
 use esp_idf_svc::hal::units::FromValueType;
+use std::rc::Rc;
 
 pub const CHAPTER_NAME: &str = "ch4_analog_and_pwm";
 
@@ -21,7 +22,7 @@ pub struct State {
     ledc_timer: LedcTimerDriver<'static, LowSpeed>,
     ledc_channel: LedcDriver<'static>,
     btn_pin: PinDriver<'static, Input>,
-    adc_pin: AdcChannelDriver<'static, ADCCH6<ADCU1>, AdcDriver<'static, ADCU1>>,
+    adc_pin: AdcChannelDriver<'static, ADCCH6<ADCU1>, Rc<AdcDriver<'static, ADCU1>>>,
 
     current_frequency: u32,
     button_pressed: bool,
@@ -36,7 +37,9 @@ pub fn setup(peripherals: Peripherals) -> Result<State> {
         RESOLUTION,
     )?;
 
-    let adc_pin = adc::init(peripherals.adc1, peripherals.pins.gpio34)?;
+    let adc1 = adc::init(peripherals.adc1)?;
+
+    let adc_pin = adc1.assign(peripherals.pins.gpio34)?;
 
     let state = State {
         ledc_timer,

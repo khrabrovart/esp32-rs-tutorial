@@ -6,6 +6,7 @@ use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
 use esp_idf_svc::hal::adc::{ADCCH6, ADCU1, ADCU2};
 use esp_idf_svc::hal::ledc::{LedcDriver, Resolution};
 use esp_idf_svc::hal::peripherals::Peripherals;
+use std::rc::Rc;
 
 pub const CHAPTER_NAME: &str = "ch12_nightlamp";
 
@@ -15,13 +16,16 @@ const MIN_LIGHT_LEVEL: f32 = 0.8;
 
 pub struct State {
     ledc_channel: LedcDriver<'static>,
-    potentiometer_pin: AdcChannelDriver<'static, ADCCH6<ADCU1>, AdcDriver<'static, ADCU1>>,
-    photoresistor_pin: AdcChannelDriver<'static, ADCCH6<ADCU2>, AdcDriver<'static, ADCU2>>,
+    potentiometer_pin: AdcChannelDriver<'static, ADCCH6<ADCU1>, Rc<AdcDriver<'static, ADCU1>>>,
+    photoresistor_pin: AdcChannelDriver<'static, ADCCH6<ADCU2>, Rc<AdcDriver<'static, ADCU2>>>,
 }
 
 pub fn setup(peripherals: Peripherals) -> Result<State> {
-    let potentiometer_pin = adc::init(peripherals.adc1, peripherals.pins.gpio34)?;
-    let photoresistor_pin = adc::init(peripherals.adc2, peripherals.pins.gpio14)?;
+    let adc1 = adc::init(peripherals.adc1)?;
+    let adc2 = adc::init(peripherals.adc2)?;
+
+    let potentiometer_pin = adc1.assign(peripherals.pins.gpio34)?;
+    let photoresistor_pin = adc2.assign(peripherals.pins.gpio14)?;
 
     let (_, ledc_channel) = ledc::init(
         peripherals.ledc.timer0,

@@ -8,6 +8,7 @@ use esp_idf_svc::hal::adc::{ADCCH6, ADCU1};
 use esp_idf_svc::hal::gpio::{Input, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
 use esp_idf_svc::hal::rmt::TxChannelDriver;
+use std::rc::Rc;
 
 pub const CHAPTER_NAME: &str = "ch6_led_pixel";
 
@@ -19,7 +20,7 @@ const MAX_STEP_MS: u64 = 500;
 pub struct State {
     ws2812_pin: TxChannelDriver<'static>,
     btn_pin: PinDriver<'static, Input>,
-    adc_pin: AdcChannelDriver<'static, ADCCH6<ADCU1>, AdcDriver<'static, ADCU1>>,
+    adc_pin: AdcChannelDriver<'static, ADCCH6<ADCU1>, Rc<AdcDriver<'static, ADCU1>>>,
 
     active_index: usize,
     last_advance: Instant,
@@ -29,7 +30,9 @@ pub struct State {
 pub fn setup(peripherals: Peripherals) -> Result<State> {
     let ws2812_pin = ws2812::init(peripherals.pins.gpio4)?;
 
-    let adc_pin = adc::init(peripherals.adc1, peripherals.pins.gpio34)?;
+    let adc1 = adc::init(peripherals.adc1)?;
+
+    let adc_pin = adc1.assign(peripherals.pins.gpio34)?;
 
     let mut state = State {
         ws2812_pin,
