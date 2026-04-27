@@ -38,3 +38,14 @@ where
     let result = from + (raw / MAX_VALUE * (to - from));
     Ok(result)
 }
+
+pub fn read_normalized<'d, C>(
+    pin: &mut AdcChannelDriver<'d, C, AdcDriver<'d, C::AdcUnit>>,
+) -> Result<f32>
+where
+    C: AdcChannel + 'd,
+{
+    let raw = pin.read_raw()? as f32;
+    let result = raw / MAX_VALUE;
+    Ok(result)
+}

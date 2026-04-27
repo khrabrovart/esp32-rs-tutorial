@@ -17,26 +17,13 @@ pub const WS2812_T1H: Duration = Duration::from_nanos(700);
 pub const WS2812_T1L: Duration = Duration::from_nanos(600);
 pub const WS2812_TRESET: Duration = Duration::from_micros(281);
 
-#[derive(Clone, Copy)]
-pub struct StripItem {
-    g: u8,
-    r: u8,
-    b: u8,
-}
-
-impl StripItem {
-    pub fn new(g: u8, r: u8, b: u8) -> Self {
-        Self { g, r, b }
-    }
-}
-
-pub fn write_strip(tx: &mut TxChannelDriver<'_>, buffer: &[StripItem]) -> Result<()> {
+pub fn write(tx: &mut TxChannelDriver<'_>, buffer: &[(u8, u8, u8)]) -> Result<()> {
     let mut symbols: Vec<Symbol> = Vec::new();
 
-    for item in buffer {
-        push_byte(&mut symbols, item.g)?;
-        push_byte(&mut symbols, item.r)?;
-        push_byte(&mut symbols, item.b)?;
+    for (g, r, b) in buffer {
+        push_byte(&mut symbols, *g)?;
+        push_byte(&mut symbols, *r)?;
+        push_byte(&mut symbols, *b)?;
     }
 
     symbols.push(Symbol::new_with(

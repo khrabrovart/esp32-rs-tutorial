@@ -24,3 +24,12 @@ where
 
     Ok((ledc_timer, ledc_channel))
 }
+
+pub fn set_duty_percentage(driver: &mut LedcDriver<'static>, percentage: f32) -> Result<()> {
+    let max_duty = driver.get_max_duty();
+    let duty = (max_duty as f32 * percentage) as u32;
+
+    driver.set_duty(duty)?;
+
+    Ok(())
+}

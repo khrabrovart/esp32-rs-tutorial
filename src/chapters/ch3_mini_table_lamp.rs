@@ -25,7 +25,7 @@ pub fn setup(peripherals: Peripherals) -> Result<State> {
 }
 
 pub async fn update(state: &mut State) -> Result<()> {
-    if button::button_pressed(&state.btn_pin).await {
+    if button::check_pressed(&state.btn_pin).await {
         if state.button_pressed {
             return Ok(());
         }

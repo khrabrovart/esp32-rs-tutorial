@@ -1,7 +1,7 @@
 use anyhow::Result;
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
-use esp32_tutorial::ch6_led_pixel::*;
+use esp32_tutorial::ch12_nightlamp::*;
 use esp_idf_svc::hal::peripherals::Peripherals;
 
 #[embassy_executor::main]

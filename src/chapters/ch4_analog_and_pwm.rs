@@ -16,7 +16,6 @@ const RESOLUTION: Resolution = Resolution::Bits10;
 const MIN_FREQUENCY: u32 = 10;
 const MAX_FREQUENCY: u32 = 500;
 const DIM_STEP: u32 = 10;
-const ADC_MAX: f32 = 4095.0;
 
 pub struct State {
     ledc_timer: LedcTimerDriver<'static, LowSpeed>,
@@ -55,7 +54,7 @@ pub async fn update(state: &mut State) -> Result<()> {
     update_frequency(state)?;
     update_led(state)?;
 
-    if button::button_pressed(&state.btn_pin).await {
+    if button::check_pressed(&state.btn_pin).await {
         if state.button_pressed {
             return Ok(());
         }
@@ -71,10 +70,11 @@ pub async fn update(state: &mut State) -> Result<()> {
 }
 
 fn update_frequency(state: &mut State) -> Result<()> {
-    let adc_value = state.adc_pin.read_raw()? as f32;
-
-    let frequency =
-        MIN_FREQUENCY + (adc_value / ADC_MAX * (MAX_FREQUENCY - MIN_FREQUENCY) as f32) as u32;
+    let frequency = adc::read_mapped(
+        &mut state.adc_pin,
+        MIN_FREQUENCY as f32,
+        MAX_FREQUENCY as f32,
+    )? as u32;
 
     if state.current_frequency == frequency {
         return Ok(());

@@ -1,6 +1,6 @@
 use crate::utils::adc;
 use crate::utils::button;
-use crate::utils::ws2812::{self, StripItem};
+use crate::utils::ws2812;
 use anyhow::Result;
 use embassy_time::{Duration, Instant};
 use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
@@ -48,7 +48,7 @@ pub fn setup(peripherals: Peripherals) -> Result<State> {
 pub async fn update(state: &mut State) -> Result<()> {
     update_step_interval(state)?;
 
-    if button::button_pressed(&state.btn_pin).await {
+    if button::check_pressed(&state.btn_pin).await {
         return Ok(());
     }
 
@@ -77,15 +77,15 @@ fn advance_led(state: &mut State) -> Result<()> {
 }
 
 fn update_strip(state: &mut State) -> Result<()> {
-    let mut buffer: Vec<StripItem> = Vec::new();
+    let mut buffer: Vec<(u8, u8, u8)> = Vec::new();
 
     for i in 0..NUM_LEDS {
         if i == state.active_index {
-            buffer.push(StripItem::new(ACTIVE_BRIGHTNESS, 0, 0));
+            buffer.push((ACTIVE_BRIGHTNESS, 0, 0));
         } else {
-            buffer.push(StripItem::new(0, 0, 0));
+            buffer.push((0, 0, 0));
         }
     }
 
-    ws2812::write_strip(&mut state.ws2812_pin, &buffer)
+    ws2812::write(&mut state.ws2812_pin, &buffer)
 }
