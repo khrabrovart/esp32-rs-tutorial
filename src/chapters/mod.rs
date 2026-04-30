@@ -2,6 +2,7 @@ pub mod ch12_nightlamp;
 pub mod ch14_joystick;
 pub mod ch15_hc595_led_bar;
 pub mod ch16_4_digit_7_segment;
+pub mod ch17_relay_and_motor;
 pub mod ch1_blink_led;
 pub mod ch2_button_and_led;
 pub mod ch3_mini_table_lamp;

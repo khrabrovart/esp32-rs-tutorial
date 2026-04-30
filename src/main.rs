@@ -1,4 +1,4 @@
-use esp32_tutorial::ch16_4_digit_7_segment::{setup, update, CHAPTER_NAME};
+use esp32_tutorial::ch17_relay_and_motor::{setup, update, CHAPTER_NAME};
 
 use anyhow::Result;
 use embassy_executor::Spawner;
