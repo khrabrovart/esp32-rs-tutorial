@@ -26,6 +26,7 @@ where
 }
 
 pub fn set_duty_percentage(driver: &mut LedcDriver<'static>, percentage: f32) -> Result<()> {
+    let percentage = percentage.clamp(0.0, 1.0);
     let max_duty = driver.get_max_duty();
     let duty = (max_duty as f32 * percentage) as u32;
 
