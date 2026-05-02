@@ -1,4 +1,4 @@
-use esp32_tutorial::ch18_servo::{setup, update, CHAPTER_NAME};
+use esp32_tutorial::ch20_lcd1602::{setup, update, CHAPTER_NAME};
 
 use anyhow::Result;
 use embassy_executor::Spawner;
@@ -19,7 +19,7 @@ async fn start() -> Result<()> {
     log::info!("Setting up chapter '{}'", CHAPTER_NAME);
 
     let peripherals = Peripherals::take().unwrap();
-    let mut state = setup(peripherals)?;
+    let mut state = setup(peripherals).await?;
 
     log::info!("Starting chapter '{}'", CHAPTER_NAME);
 
