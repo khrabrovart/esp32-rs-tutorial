@@ -12,3 +12,4 @@ pub mod ch17_motor_and_driver;
 pub mod ch18_servo;
 
 pub mod ch20_lcd1602;
+pub mod ch21_ultrasonic_ranging;

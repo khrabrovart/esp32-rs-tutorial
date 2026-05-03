@@ -1,6 +1,7 @@
 pub mod adc;
 pub mod button;
 pub mod hc595;
+pub mod hc_sr04;
 pub mod hd44780_i2c;
 pub mod i2c;
 pub mod ledc;

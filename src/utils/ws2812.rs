@@ -17,6 +17,21 @@ pub const WS2812_T1H: Duration = Duration::from_nanos(700);
 pub const WS2812_T1L: Duration = Duration::from_nanos(600);
 pub const WS2812_TRESET: Duration = Duration::from_micros(281);
 
+pub fn init<'d>(pin: impl OutputPin + 'd) -> Result<TxChannelDriver<'d>> {
+    let config = TxChannelConfig {
+        resolution: WS2812_RMT_RESOLUTION_HZ,
+        memory_access: MemoryAccess::Indirect {
+            memory_block_symbols: 64,
+        },
+        transaction_queue_depth: 4,
+        ..Default::default()
+    };
+
+    let tx = TxChannelDriver::new(pin, &config)?;
+
+    Ok(tx)
+}
+
 pub fn write(tx: &mut TxChannelDriver<'_>, buffer: &[(u8, u8, u8)]) -> Result<()> {
     let mut symbols: Vec<Symbol> = Vec::new();
 
@@ -40,24 +55,6 @@ pub fn write(tx: &mut TxChannelDriver<'_>, buffer: &[(u8, u8, u8)]) -> Result<()
     queue.push(&symbols, &TransmitConfig::default())?;
 
     Ok(())
-}
-
-pub fn init<'d, P>(pin: P) -> Result<TxChannelDriver<'d>>
-where
-    P: OutputPin + 'd,
-{
-    let config = TxChannelConfig {
-        resolution: WS2812_RMT_RESOLUTION_HZ,
-        memory_access: MemoryAccess::Indirect {
-            memory_block_symbols: 64,
-        },
-        transaction_queue_depth: 4,
-        ..Default::default()
-    };
-
-    let tx = TxChannelDriver::new(pin, &config)?;
-
-    Ok(tx)
 }
 
 fn push_byte(symbols: &mut Vec<Symbol>, byte: u8) -> Result<()> {
