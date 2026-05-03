@@ -1,8 +1,8 @@
+use crate::utils::hc_sr04::HCSR04Driver;
 use crate::utils::hd44780_i2c::HD44780I2cDriver;
 use crate::utils::i2c;
 use anyhow::Result;
-use embassy_time::{Duration, Instant, Timer};
-use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
+use embassy_time::{Duration, Instant};
 use esp_idf_svc::hal::peripherals::Peripherals;
 
 pub const CHAPTER_NAME: &str = "ch21_ultrasonic_ranging";
@@ -11,18 +11,12 @@ const LCD_I2C_ADDR: u8 = 0x27;
 const BAUD_RATE_HZ: u32 = 100_000;
 const BACKLIGHT_ON: bool = true;
 
-const DISTANCE_UPDATE_INTERVAL: Duration = Duration::from_millis(100);
-
-const ECHO_RISING_TIMEOUT: Duration = Duration::from_millis(30);
-const ECHO_PULSE_MAX: Duration = Duration::from_millis(40);
-
-const CM_PER_US_ROUND_TRIP_HALF: f32 = 0.0343 / 2.0;
+const DISTANCE_UPDATE_INTERVAL: Duration = Duration::from_millis(200);
 
 pub struct State {
     lcd: HD44780I2cDriver<'static>,
-    trigger_pin: PinDriver<'static, Output>,
-    echo_pin: PinDriver<'static, Input>,
-    distance: f32,
+    hc_sr04: HCSR04Driver<'static>,
+    distance_cm: Option<f32>,
     last_distance_update: Instant,
 }
 
@@ -35,15 +29,12 @@ pub async fn setup(peripherals: Peripherals) -> Result<State> {
     )?;
 
     let lcd = HD44780I2cDriver::new(i2c_driver, LCD_I2C_ADDR, BACKLIGHT_ON).await?;
-
-    let trigger_pin = PinDriver::output(peripherals.pins.gpio12)?;
-    let echo_pin = PinDriver::input(peripherals.pins.gpio13, Pull::Floating)?;
+    let hc_sr04 = HCSR04Driver::init(peripherals.pins.gpio12, peripherals.pins.gpio13)?;
 
     let state = State {
         lcd,
-        trigger_pin,
-        echo_pin,
-        distance: 0.0,
+        hc_sr04,
+        distance_cm: None,
         last_distance_update: Instant::now(),
     };
 
@@ -52,7 +43,6 @@ pub async fn setup(peripherals: Peripherals) -> Result<State> {
 
 pub async fn update(state: &mut State) -> Result<()> {
     update_distance(state).await?;
-
     update_lcd(state).await?;
 
     Ok(())
@@ -63,61 +53,36 @@ async fn update_distance(state: &mut State) -> Result<()> {
         return Ok(());
     }
 
-    state.distance = measure_distance(&mut state.trigger_pin, &state.echo_pin).await?;
-    state.last_distance_update = Instant::now();
+    let distance_mm = match state.hc_sr04.measure_mm().await {
+        Ok(mm) if mm > 0.0 => Some(mm),
+        Ok(_) => {
+            log::error!("could not parse distance measurement");
+            None
+        }
+        Err(e) => {
+            log::error!("distance measurement error: {e:?}");
+            None
+        }
+    };
 
-    log::info!("distance: {:.3}cm", state.distance);
+    state.last_distance_update = Instant::now();
+    state.distance_cm = distance_mm.map(|mm| mm / 10.0);
+
+    if let Some(distance_cm) = state.distance_cm {
+        log::info!("distance: {:.1}cm", distance_cm);
+    }
 
     Ok(())
-}
-
-async fn measure_distance(
-    trigger_pin: &mut PinDriver<'static, Output>,
-    echo_pin: &PinDriver<'static, Input>,
-) -> Result<f32> {
-    trigger_pin.set_low()?;
-
-    Timer::after(Duration::from_micros(2)).await;
-
-    trigger_pin.set_high()?;
-
-    Timer::after(Duration::from_micros(10)).await;
-
-    trigger_pin.set_low()?;
-
-    let wait_start = Instant::now();
-
-    while echo_pin.is_low() {
-        if Instant::now().saturating_duration_since(wait_start) > ECHO_RISING_TIMEOUT {
-            log::error!("echo rising edge timeout");
-            return Ok(0.0);
-        }
-    }
-
-    let pulse_start = Instant::now();
-
-    while echo_pin.is_high() {
-        let elapsed = Instant::now().saturating_duration_since(pulse_start);
-
-        if elapsed > ECHO_PULSE_MAX {
-            log::error!("echo pulse too long");
-            return Ok(0.0);
-        }
-    }
-
-    let pulse_end = Instant::now();
-    let pulse_us = pulse_end.saturating_duration_since(pulse_start).as_micros() as f32;
-
-    Ok(pulse_us * CM_PER_US_ROUND_TRIP_HALF)
 }
 
 async fn update_lcd(state: &mut State) -> Result<()> {
     state.lcd.write_line(0, "Distance-meter").await?;
 
-    state
-        .lcd
-        .write_line(1, &format!("{:.0}cm", state.distance))
-        .await?;
+    let distance_text = state
+        .distance_cm
+        .map_or("--- cm".to_string(), |cm| format!("{:>3.0} cm", cm));
+
+    state.lcd.write_line(1, &distance_text).await?;
 
     Ok(())
 }
