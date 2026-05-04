@@ -27,7 +27,7 @@ pub struct State {
     step_interval: Duration,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let ws2812_pin = ws2812::init(peripherals.pins.gpio4)?;
 
     let adc1 = adc::init(peripherals.adc1)?;

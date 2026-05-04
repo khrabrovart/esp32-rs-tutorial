@@ -24,7 +24,7 @@ pub struct State {
     servo_duty: f32,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let (_, ledc_channel) = ledc::init(
         peripherals.ledc.timer0,
         peripherals.ledc.channel0,

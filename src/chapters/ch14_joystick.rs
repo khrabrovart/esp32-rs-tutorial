@@ -26,7 +26,7 @@ pub struct State {
     joystick_pin: PinDriver<'static, Input>,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let (_, ledc_channel_up) = ledc::init(
         peripherals.ledc.timer0,
         peripherals.ledc.channel0,

@@ -9,7 +9,7 @@ pub struct State {
     btn_pin: PinDriver<'static, Input>,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let state = State {
         led_pin: PinDriver::output(peripherals.pins.gpio4)?,
         btn_pin: PinDriver::input(peripherals.pins.gpio13, Pull::Floating)?,

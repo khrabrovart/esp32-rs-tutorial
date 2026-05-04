@@ -49,7 +49,7 @@ pub struct State {
     last_temperature_update: Instant,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let adc2 = adc::init(peripherals.adc2)?;
 
     let thermistor_pin = adc2.assign(peripherals.pins.gpio25)?;

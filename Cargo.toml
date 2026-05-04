@@ -2,9 +2,9 @@
 name = "esp32_tutorial"
 version = "0.1.0"
 authors = ["Artur Khrabrov <khrabrovart@gmail.com>"]
-edition = "2021"
+edition = "2024"
 resolver = "2"
-rust-version = "1.82"
+rust-version = "1.85"
 
 [lib]
 path = "src/lib.rs"

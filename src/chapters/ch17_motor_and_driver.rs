@@ -30,7 +30,7 @@ pub struct State {
     last_motor_speed_update: Instant,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let (_, ledc_channel) = ledc::init(
         peripherals.ledc.timer0,
         peripherals.ledc.channel0,

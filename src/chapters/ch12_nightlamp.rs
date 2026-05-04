@@ -20,7 +20,7 @@ pub struct State {
     photoresistor_pin: AdcChannelDriver<'static, ADCCH6<ADCU2>, Rc<AdcDriver<'static, ADCU2>>>,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let adc1 = adc::init(peripherals.adc1)?;
     let adc2 = adc::init(peripherals.adc2)?;
 

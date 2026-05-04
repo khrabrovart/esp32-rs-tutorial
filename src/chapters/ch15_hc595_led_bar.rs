@@ -19,7 +19,7 @@ pub struct State {
     hc595: Hc595Driver,
 }
 
-pub fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let adc2 = adc::init(peripherals.adc2)?;
 
     let potentiometer_pin = adc2.assign(peripherals.pins.gpio26)?;

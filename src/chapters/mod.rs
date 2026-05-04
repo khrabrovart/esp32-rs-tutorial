@@ -13,3 +13,4 @@ pub mod ch18_servo;
 
 pub mod ch20_lcd1602;
 pub mod ch21_ultrasonic_ranging;
+pub mod ch22_matrix_keypad;

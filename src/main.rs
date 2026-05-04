@@ -1,4 +1,4 @@
-use esp32_tutorial::ch21_ultrasonic_ranging::{setup, update, CHAPTER_NAME};
+use esp32_tutorial::ch22_matrix_keypad::{setup, update, CHAPTER_NAME};
 
 use anyhow::Result;
 use embassy_executor::Spawner;
