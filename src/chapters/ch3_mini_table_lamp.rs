@@ -3,7 +3,7 @@ use anyhow::Result;
 use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-pub const CHAPTER_NAME: &str = "ch3_mini_table_lamp";
+pub const PROJECT_NAME: &str = "ch3_mini_table_lamp";
 
 pub struct State {
     led_pin: PinDriver<'static, Output>,

@@ -15,7 +15,7 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::sync::LazyLock;
 
-pub const CHAPTER_NAME: &str = "ch16_4_digit_7_segment";
+pub const PROJECT_NAME: &str = "ch16_4_digit_7_segment";
 
 const TEMPERATURE_UPDATE_INTERVAL: Duration = Duration::from_millis(200);
 

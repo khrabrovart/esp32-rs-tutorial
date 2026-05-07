@@ -12,7 +12,7 @@ use esp_idf_svc::hal::ledc::{LedcDriver, Resolution};
 use esp_idf_svc::hal::peripherals::Peripherals;
 use std::rc::Rc;
 
-pub const CHAPTER_NAME: &str = "ch14_joystick";
+pub const PROJECT_NAME: &str = "ch14_joystick";
 
 const FREQUENCY: u32 = 5000;
 const RESOLUTION: Resolution = Resolution::Bits8;

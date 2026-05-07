@@ -1,6 +1,6 @@
 # ESP32 Rust Tutorial
 
-Hands-on examples for programming an ESP32 in Rust. Each “chapter” in `src/chapters/` is a self-contained sample: `CHAPTER_NAME`, an async `setup`, and an `update` loop, wired from `src/main.rs` (Embassy executor, `esp-idf-svc` HAL). Shared helpers live under `src/utils/`.
+Hands-on examples for programming an ESP32 in Rust. Each “chapter” in `src/chapters/` is a self-contained sample: `PROJECT_NAME`, an async `setup`, and an `update` loop, wired from `src/main.rs` (Embassy executor, `esp-idf-svc` HAL). Shared helpers live under `src/utils/`.
 
 Stack in short: [esp-idf-svc](https://github.com/esp-rs/esp-idf-svc) (ESP-IDF from Rust), [Embassy](https://github.com/embassy-rs/embassy) for async timing/tasks, and [anyhow](https://github.com/dtolnay/anyhow) for error handling. Build is driven by `embuild` / `build.rs` as usual for `esp-idf-sys`.
 
@@ -51,4 +51,4 @@ Point `src/main.rs` at the module you want, for example:
 use esp32_tutorial::ch6_led_pixel::*;
 ```
 
-Available modules are the `pub mod` entries in `src/chapters/mod.rs` (e.g. `ch1_blink_led`, `ch2_button_and_led`, …). `start()` already uses `CHAPTER_NAME`, `setup`, and `update` from that import, so you only need to change the `use` line.
+Available modules are the `pub mod` entries in `src/chapters/mod.rs` (e.g. `ch1_blink_led`, `ch2_button_and_led`, …). `start()` already uses `PROJECT_NAME`, `setup`, and `update` from that import, so you only need to change the `use` line.

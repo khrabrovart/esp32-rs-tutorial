@@ -8,7 +8,7 @@ use esp_idf_svc::hal::ledc::LedcDriver;
 use esp_idf_svc::hal::ledc::Resolution;
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-pub const CHAPTER_NAME: &str = "ch18_servo";
+pub const PROJECT_NAME: &str = "ch18_servo";
 
 const FREQUENCY: u32 = 50;
 const RESOLUTION: Resolution = Resolution::Bits13;

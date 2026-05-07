@@ -11,7 +11,7 @@ use esp_idf_svc::hal::peripherals::Peripherals;
 use esp_idf_svc::hal::units::FromValueType;
 use std::rc::Rc;
 
-pub const CHAPTER_NAME: &str = "ch4_analog_and_pwm";
+pub const PROJECT_NAME: &str = "ch4_analog_and_pwm";
 
 const RESOLUTION: Resolution = Resolution::Bits10;
 const MIN_FREQUENCY: u32 = 10;

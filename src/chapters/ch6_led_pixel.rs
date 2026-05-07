@@ -10,7 +10,7 @@ use esp_idf_svc::hal::peripherals::Peripherals;
 use esp_idf_svc::hal::rmt::TxChannelDriver;
 use std::rc::Rc;
 
-pub const CHAPTER_NAME: &str = "ch6_led_pixel";
+pub const PROJECT_NAME: &str = "ch6_led_pixel";
 
 const NUM_LEDS: usize = 8;
 const ACTIVE_BRIGHTNESS: u8 = 32;

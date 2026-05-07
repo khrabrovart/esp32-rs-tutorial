@@ -3,7 +3,7 @@ use embassy_time::{Duration, Timer};
 use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-pub const CHAPTER_NAME: &str = "ch22_matrix_keypad";
+pub const PROJECT_NAME: &str = "ch22_matrix_keypad";
 
 const KEY_LABELS: [[char; 4]; 4] = [
     ['1', '2', '3', 'A'],

@@ -9,7 +9,7 @@ use esp_idf_svc::hal::adc::{ADCCH8, ADCCH9, ADCU2};
 use esp_idf_svc::hal::peripherals::Peripherals;
 use std::rc::Rc;
 
-pub const CHAPTER_NAME: &str = "ch15_hc595_led_bar";
+pub const PROJECT_NAME: &str = "ch15_hc595_led_bar";
 
 const MAX_BAR_LEVEL: f32 = 8.0;
 

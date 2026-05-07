@@ -3,7 +3,7 @@ use embassy_time::{Duration, Timer};
 use esp_idf_svc::hal::gpio::{Output, PinDriver};
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-pub const CHAPTER_NAME: &str = "ch1_blink_led";
+pub const PROJECT_NAME: &str = "ch1_blink_led";
 
 pub struct State {
     led_pin: PinDriver<'static, Output>,

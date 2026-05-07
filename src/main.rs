@@ -1,4 +1,4 @@
-use esp32_tutorial::ch22_matrix_keypad::{setup, update, CHAPTER_NAME};
+use esp32_tutorial::proj_rxb85_rf_receiver::{PROJECT_NAME, setup, update};
 
 use anyhow::Result;
 use embassy_executor::Spawner;
@@ -16,12 +16,12 @@ async fn main(_spawner: Spawner) {
 }
 
 async fn start() -> Result<()> {
-    log::info!("Setting up chapter '{}'", CHAPTER_NAME);
+    log::info!("Setting up '{}'", PROJECT_NAME);
 
     let peripherals = Peripherals::take().unwrap();
     let mut state = setup(peripherals).await?;
 
-    log::info!("Starting chapter '{}'", CHAPTER_NAME);
+    log::info!("Starting '{}'", PROJECT_NAME);
 
     loop {
         update(&mut state).await?;

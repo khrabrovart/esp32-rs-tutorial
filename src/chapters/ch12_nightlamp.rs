@@ -8,7 +8,7 @@ use esp_idf_svc::hal::ledc::{LedcDriver, Resolution};
 use esp_idf_svc::hal::peripherals::Peripherals;
 use std::rc::Rc;
 
-pub const CHAPTER_NAME: &str = "ch12_nightlamp";
+pub const PROJECT_NAME: &str = "ch12_nightlamp";
 
 const FREQUENCY: u32 = 5000;
 const RESOLUTION: Resolution = Resolution::Bits8;

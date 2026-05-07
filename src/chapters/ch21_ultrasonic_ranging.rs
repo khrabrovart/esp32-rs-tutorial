@@ -5,7 +5,7 @@ use anyhow::Result;
 use embassy_time::{Duration, Instant};
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-pub const CHAPTER_NAME: &str = "ch21_ultrasonic_ranging";
+pub const PROJECT_NAME: &str = "ch21_ultrasonic_ranging";
 
 const LCD_I2C_ADDR: u8 = 0x27;
 const BAUD_RATE_HZ: u32 = 100_000;

@@ -11,7 +11,7 @@ use esp_idf_svc::hal::ledc::LedcDriver;
 use esp_idf_svc::hal::ledc::Resolution;
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-pub const CHAPTER_NAME: &str = "ch17_motor_and_driver";
+pub const PROJECT_NAME: &str = "ch17_motor_and_driver";
 
 const FREQUENCY: u32 = 1000;
 const RESOLUTION: Resolution = Resolution::Bits10;

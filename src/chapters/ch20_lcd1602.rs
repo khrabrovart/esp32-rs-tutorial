@@ -9,7 +9,7 @@ use esp_idf_svc::hal::gpio::PinDriver;
 use esp_idf_svc::hal::gpio::Pull;
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-pub const CHAPTER_NAME: &str = "ch20_lcd1602";
+pub const PROJECT_NAME: &str = "ch20_lcd1602";
 
 const LCD_I2C_ADDR: u8 = 0x27;
 const BAUD_RATE_HZ: u32 = 100_000;
