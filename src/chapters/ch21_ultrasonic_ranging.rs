@@ -1,4 +1,4 @@
-use crate::utils::hc_sr04::HCSR04Driver;
+use crate::utils::hc_sr04_rmt::HCSR04Driver;
 use crate::utils::hd44780_i2c::HD44780I2cDriver;
 use crate::utils::i2c;
 use anyhow::Result;

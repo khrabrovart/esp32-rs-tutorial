@@ -1,5 +1,5 @@
 use crate::utils::button;
-use crate::utils::radio::RFReceiverDriver;
+use crate::utils::radio_rmt::RFReceiverDriver;
 use anyhow::Result;
 use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
@@ -13,18 +13,18 @@ const RF_RMT_RESOLUTION_HZ: Hertz = Hertz(1_000_000);
 pub struct State {
     led_pin: PinDriver<'static, Output>,
     btn_pin: PinDriver<'static, Input>,
-    radio: RFReceiverDriver<'static>,
+    receiver: RFReceiverDriver<'static>,
 }
 
 pub async fn setup(peripherals: Peripherals) -> Result<State> {
     let led_pin = PinDriver::output(peripherals.pins.gpio18)?;
     let btn_pin = PinDriver::input(peripherals.pins.gpio4, Pull::Floating)?;
-    let radio = RFReceiverDriver::init(peripherals.pins.gpio14)?;
+    let receiver = RFReceiverDriver::init(peripherals.pins.gpio14)?;
 
     Ok(State {
         led_pin,
         btn_pin,
-        radio,
+        receiver,
     })
 }
 
@@ -34,7 +34,7 @@ pub async fn update(state: &mut State) -> Result<()> {
 
         state.led_pin.set_high()?;
 
-        let symbols = state.radio.receive().await?;
+        let symbols = state.receiver.receive().await?;
 
         state.led_pin.set_low()?;
 

@@ -1,6 +1,6 @@
 use crate::utils::adc;
 use crate::utils::button;
-use crate::utils::ws2812;
+use crate::utils::ws2812_rmt;
 use anyhow::Result;
 use embassy_time::{Duration, Instant};
 use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
@@ -28,7 +28,7 @@ pub struct State {
 }
 
 pub async fn setup(peripherals: Peripherals) -> Result<State> {
-    let ws2812_pin = ws2812::init(peripherals.pins.gpio4)?;
+    let ws2812_pin = ws2812_rmt::init(peripherals.pins.gpio4)?;
 
     let adc1 = adc::init(peripherals.adc1)?;
 
@@ -90,5 +90,5 @@ fn update_strip(state: &mut State) -> Result<()> {
         }
     }
 
-    ws2812::write(&mut state.ws2812_pin, &buffer)
+    ws2812_rmt::write(&mut state.ws2812_pin, &buffer)
 }
