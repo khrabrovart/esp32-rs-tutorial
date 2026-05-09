@@ -24,6 +24,7 @@ opt-level = "z"
 log = "0.4"
 esp-idf-svc = { version = "0.52.1", features = ["critical-section", "embassy-time-driver", "embassy-sync"] }
 embassy-executor = { version = "0.10.0", features = ["executor-thread", "platform-std"] }
+embassy-futures = "0.1.2"
 embassy-time = { version = "0.5" }
 anyhow = "1.0.102"
 

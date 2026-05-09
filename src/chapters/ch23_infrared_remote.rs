@@ -224,9 +224,13 @@ static BUTTON_BY_CODE: LazyLock<HashMap<u32, Button>> = LazyLock::new(|| {
 #[embassy_executor::task(pool_size = 4)]
 async fn flash_led(led: Arc<Mutex<PinDriver<'static, Output>>>) {
     log::info!("LED on");
+
     let _ = led.lock().unwrap().set_high();
+
     Timer::after(Duration::from_secs(1)).await;
+
     log::info!("LED off");
+
     let _ = led.lock().unwrap().set_low();
 }
 

@@ -1,6 +1,6 @@
 use anyhow::Result;
 use core::time::Duration;
-use embassy_time::{Duration as EmbassyDuration, Timer};
+use embassy_futures::yield_now;
 use esp_idf_svc::hal::delay::TickType;
 use esp_idf_svc::hal::gpio::InputPin;
 use esp_idf_svc::hal::rmt::config::{MemoryAccess, ReceiveConfig, RxChannelConfig};
@@ -12,6 +12,8 @@ const IR_RMT_RESOLUTION_HZ: Hertz = Hertz(1_000_000);
 
 const SIGNAL_RANGE_MIN: Duration = Duration::from_nanos(3000);
 const SIGNAL_RANGE_MAX: Duration = Duration::from_millis(12);
+
+const RECEIVE_POLL_TICKS: TickType = TickType::new_millis(10);
 
 const SYMBOL_BUFFER_LENGTH: usize = 64;
 
@@ -38,7 +40,7 @@ impl<'d> IRReceiverDriver<'d> {
         let config = ReceiveConfig {
             signal_range_min: SIGNAL_RANGE_MIN,
             signal_range_max: SIGNAL_RANGE_MAX,
-            timeout: Some(TickType::new_millis(10).ticks()),
+            timeout: Some(RECEIVE_POLL_TICKS.ticks()),
             ..Default::default()
         };
 
@@ -48,7 +50,7 @@ impl<'d> IRReceiverDriver<'d> {
             match self.rx.receive(&mut buffer, &config) {
                 Ok(n) => return Ok(buffer[..n].to_vec()),
                 Err(e) if e.code() == ESP_ERR_TIMEOUT as i32 => {
-                    Timer::after(EmbassyDuration::from_ticks(0)).await;
+                    yield_now().await;
                 }
                 Err(e) => return Err(e.into()),
             }
