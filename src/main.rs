@@ -1,4 +1,4 @@
-use esp32_tutorial::ch23_infrared_remote::{PROJECT_NAME, setup, update};
+use esp32_tutorial::ch24_hygrothermograph_dht11::{PROJECT_NAME, setup, update};
 
 use anyhow::Result;
 use embassy_executor::Spawner;

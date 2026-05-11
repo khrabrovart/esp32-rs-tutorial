@@ -2,6 +2,7 @@ use crate::utils::adc;
 use crate::utils::button;
 use crate::utils::ledc;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
 use esp_idf_svc::hal::adc::{ADCCH5, ADCCH6, ADCU2};
 use esp_idf_svc::hal::gpio::Input;
@@ -26,7 +27,7 @@ pub struct State {
     joystick_pin: PinDriver<'static, Input>,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let (_, ledc_channel_up) = ledc::init(
         peripherals.ledc.timer0,
         peripherals.ledc.channel0,

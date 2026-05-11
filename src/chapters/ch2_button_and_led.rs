@@ -1,4 +1,5 @@
 use anyhow::Result;
+use embassy_executor::Spawner;
 use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
 
@@ -9,7 +10,7 @@ pub struct State {
     btn_pin: PinDriver<'static, Input>,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let state = State {
         led_pin: PinDriver::output(peripherals.pins.gpio4)?,
         btn_pin: PinDriver::input(peripherals.pins.gpio13, Pull::Floating)?,

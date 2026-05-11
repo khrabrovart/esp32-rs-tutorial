@@ -1,6 +1,7 @@
 use crate::utils::button;
 use crate::utils::ledc;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use esp_idf_svc::hal::gpio::Input;
 use esp_idf_svc::hal::gpio::PinDriver;
 use esp_idf_svc::hal::gpio::Pull;
@@ -24,7 +25,7 @@ pub struct State {
     servo_duty: f32,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let (_, ledc_channel) = ledc::init(
         peripherals.ledc.timer0,
         peripherals.ledc.channel0,

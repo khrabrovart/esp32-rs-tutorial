@@ -2,6 +2,7 @@ use crate::utils::adc;
 use crate::utils::ledc;
 use crate::utils::math;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
 use esp_idf_svc::hal::adc::{ADCCH6, ADCU1, ADCU2};
 use esp_idf_svc::hal::ledc::{LedcDriver, Resolution};
@@ -20,7 +21,7 @@ pub struct State {
     photoresistor_pin: AdcChannelDriver<'static, ADCCH6<ADCU2>, Rc<AdcDriver<'static, ADCU2>>>,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let adc1 = adc::init(peripherals.adc1)?;
     let adc2 = adc::init(peripherals.adc2)?;
 

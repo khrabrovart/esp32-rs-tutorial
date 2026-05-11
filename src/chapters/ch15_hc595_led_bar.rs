@@ -4,6 +4,7 @@ use crate::utils::hc595::Hc595Driver;
 use crate::utils::hc595::ShiftOrder;
 use crate::utils::math;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
 use esp_idf_svc::hal::adc::{ADCCH8, ADCCH9, ADCU2};
 use esp_idf_svc::hal::peripherals::Peripherals;
@@ -19,7 +20,7 @@ pub struct State {
     hc595: Hc595Driver,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let adc2 = adc::init(peripherals.adc2)?;
 
     let potentiometer_pin = adc2.assign(peripherals.pins.gpio26)?;

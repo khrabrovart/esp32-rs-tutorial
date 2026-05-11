@@ -2,6 +2,7 @@ use crate::utils::button;
 use crate::utils::hd44780_i2c::HD44780I2cDriver;
 use crate::utils::i2c;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use embassy_time::Duration;
 use embassy_time::Instant;
 use esp_idf_svc::hal::gpio::Input;
@@ -25,7 +26,7 @@ pub struct State {
     last_count_update: Instant,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let i2c_driver = i2c::init(
         peripherals.i2c0,
         peripherals.pins.gpio14,

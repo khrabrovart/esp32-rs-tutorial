@@ -2,6 +2,7 @@ use crate::utils::adc;
 use crate::utils::button;
 use crate::utils::ws2812_rmt;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use embassy_time::{Duration, Instant};
 use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
 use esp_idf_svc::hal::adc::{ADCCH6, ADCU1};
@@ -27,7 +28,7 @@ pub struct State {
     step_interval: Duration,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let ws2812_pin = ws2812_rmt::init(peripherals.pins.gpio4)?;
 
     let adc1 = adc::init(peripherals.adc1)?;

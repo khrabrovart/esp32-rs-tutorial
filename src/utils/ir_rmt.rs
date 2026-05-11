@@ -49,7 +49,7 @@ impl<'d> IRReceiverDriver<'d> {
         loop {
             match self.rx.receive(&mut buffer, &config) {
                 Ok(n) => return Ok(buffer[..n].to_vec()),
-                Err(e) if e.code() == ESP_ERR_TIMEOUT as i32 => {
+                Err(e) if e.code() == ESP_ERR_TIMEOUT => {
                     yield_now().await;
                 }
                 Err(e) => return Err(e.into()),

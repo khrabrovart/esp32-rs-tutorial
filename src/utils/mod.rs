@@ -1,5 +1,6 @@
 pub mod adc;
 pub mod button;
+pub mod dht11;
 pub mod hc595;
 pub mod ledc;
 pub mod math;

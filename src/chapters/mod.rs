@@ -15,3 +15,4 @@ pub mod ch20_lcd1602;
 pub mod ch21_ultrasonic_ranging;
 pub mod ch22_matrix_keypad;
 pub mod ch23_infrared_remote;
+pub mod ch24_hygrothermograph_dht11;

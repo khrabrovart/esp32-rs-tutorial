@@ -1,6 +1,7 @@
 use crate::utils::button;
 use crate::utils::ledc;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use embassy_time::Duration;
 use embassy_time::Instant;
 use esp_idf_svc::hal::gpio::Input;
@@ -30,7 +31,7 @@ pub struct State {
     last_motor_speed_update: Instant,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let (_, ledc_channel) = ledc::init(
         peripherals.ledc.timer0,
         peripherals.ledc.channel0,

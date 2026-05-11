@@ -4,6 +4,7 @@ use crate::utils::hc595::Hc595Driver;
 use crate::utils::hc595::ShiftOrder;
 use crate::utils::thermo;
 use anyhow::Result;
+use embassy_executor::Spawner;
 use embassy_time::Timer;
 use embassy_time::{Duration, Instant};
 use esp_idf_svc::hal::adc::oneshot::{AdcChannelDriver, AdcDriver};
@@ -49,7 +50,7 @@ pub struct State {
     last_temperature_update: Instant,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let adc2 = adc::init(peripherals.adc2)?;
 
     let thermistor_pin = adc2.assign(peripherals.pins.gpio25)?;

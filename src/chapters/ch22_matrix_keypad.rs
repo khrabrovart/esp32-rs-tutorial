@@ -1,4 +1,5 @@
 use anyhow::Result;
+use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
 use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
@@ -18,7 +19,7 @@ pub struct State {
     pressed_key: Option<char>,
 }
 
-pub async fn setup(peripherals: Peripherals) -> Result<State> {
+pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let mut row_pins = [
         PinDriver::output(peripherals.pins.gpio22)?,
         PinDriver::output(peripherals.pins.gpio21)?,
