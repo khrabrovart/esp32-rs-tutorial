@@ -105,14 +105,14 @@ fn measure_temperature(state: &mut State) -> Result<()> {
     state.temperature = thermo::ntc_to_celsius(thermistor_level, 10_000.0, 10_000.0, 25.0, 3950.0);
     state.last_temperature_update = Instant::now();
 
-    log::info!("temperature: {:.2}°C", state.temperature);
+    log::info!("Temperature: {:.2}°C", state.temperature);
 
     Ok(())
 }
 
 async fn update_display(state: &mut State, mask: Vec<u8>) -> Result<()> {
     if mask.len() != state.digit_pins.len() {
-        log::error!("mask length does not match digit pins length");
+        log::error!("Mask length does not match digit pins length");
         return Ok(());
     }
 

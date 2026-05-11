@@ -81,7 +81,7 @@ async fn update_count(state: &mut State) -> Result<bool> {
         state.last_count_update = Instant::now();
     }
 
-    log::info!("count: {}, updated: {}", state.count, count_updated);
+    log::info!("Count: {}, Updated: {}", state.count, count_updated);
 
     Ok(count_updated)
 }

@@ -57,11 +57,11 @@ async fn update_distance(state: &mut State) -> Result<()> {
     let distance_mm = match state.hc_sr04.measure_mm().await {
         Ok(mm) if mm > 0.0 => Some(mm),
         Ok(_) => {
-            log::error!("could not parse distance measurement");
+            log::error!("Could not parse distance measurement");
             None
         }
         Err(e) => {
-            log::error!("distance measurement error: {e:?}");
+            log::error!("Distance measurement error: {e:?}");
             None
         }
     };
@@ -70,7 +70,7 @@ async fn update_distance(state: &mut State) -> Result<()> {
     state.distance_cm = distance_mm.map(|mm| mm / 10.0);
 
     if let Some(distance_cm) = state.distance_cm {
-        log::info!("distance: {:.1}cm", distance_cm);
+        log::info!("Distance: {:.1}cm", distance_cm);
     }
 
     Ok(())

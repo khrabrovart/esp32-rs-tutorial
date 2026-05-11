@@ -62,7 +62,7 @@ pub async fn update(state: &mut State) -> Result<()> {
     state.hc595.write_byte(data, ShiftOrder::MsbFirst)?;
 
     log::info!(
-        "potentiometer: {:.2}, photoresistor: {:.2}, light: {:.2}, bar: 0x{:08b}",
+        "Potentiometer: {:.2}, Photoresistor: {:.2}, Light: {:.2}, Bar: 0x{:08b}",
         potentiometer_level,
         photoresistor_level,
         light_level,

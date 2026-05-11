@@ -67,7 +67,7 @@ async fn update_duty(state: &mut State) -> Result<()> {
     let max_duty = state.servo_ledc_channel.get_max_duty();
 
     log::info!(
-        "duty: {:.3}/{:.3}, {:.1}ms",
+        "Duty: {:.3}/{:.3}, {:.1}ms",
         duty,
         max_duty,
         duty as f32 / max_duty as f32 * 1000.0 / FREQUENCY as f32

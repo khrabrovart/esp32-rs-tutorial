@@ -34,13 +34,13 @@ pub async fn update(state: &mut State) -> Result<()> {
     match dht11::measure(&mut state.dht_pin).await {
         Ok((humidity, temperature)) => {
             log::info!(
-                "humidity: {:.1}%, temperature: {:.1}°C",
+                "Humidity: {:.1}%, Temperature: {:.1}°C",
                 humidity,
                 temperature
             );
         }
         Err(e) => {
-            log::warn!("DHT11 read failed: {e:?}");
+            log::warn!("Measurement failed: {e:?}");
         }
     }
 

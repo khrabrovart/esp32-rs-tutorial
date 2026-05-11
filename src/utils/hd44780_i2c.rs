@@ -34,7 +34,7 @@ impl<'d> HD44780I2cDriver<'d> {
             0 => ROW_0,
             1 => ROW_1,
             _ => {
-                log::error!("line must be 0 or 1");
+                log::error!("Line must be 0 or 1");
                 return Ok(());
             }
         };
