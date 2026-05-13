@@ -1,4 +1,4 @@
-use esp32_tutorial::ch25_motion_sensor::{PROJECT_NAME, setup, update};
+use esp32_tutorial::ch27_bluetooth::{PROJECT_NAME, setup, update};
 
 use anyhow::Result;
 use embassy_executor::Spawner;

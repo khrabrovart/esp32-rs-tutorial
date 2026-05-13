@@ -17,3 +17,4 @@ pub mod ch22_matrix_keypad;
 pub mod ch23_infrared_remote;
 pub mod ch24_hygrothermograph_dht11;
 pub mod ch25_motion_sensor;
+pub mod ch27_bluetooth;

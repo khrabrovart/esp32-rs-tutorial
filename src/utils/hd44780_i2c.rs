@@ -12,15 +12,15 @@ const ROW_1: u8 = 0xC0;
 
 pub struct HD44780I2cDriver<'d> {
     i2c: I2cDriver<'d>,
-    addr: u8,
+    address: u8,
     backlight_on: bool,
 }
 
 impl<'d> HD44780I2cDriver<'d> {
-    pub async fn new(i2c: I2cDriver<'d>, addr: u8, backlight_on: bool) -> Result<Self> {
+    pub async fn new(i2c: I2cDriver<'d>, address: u8, backlight_on: bool) -> Result<Self> {
         let mut driver = Self {
             i2c,
-            addr,
+            address,
             backlight_on,
         };
 
@@ -106,11 +106,11 @@ impl<'d> HD44780I2cDriver<'d> {
         let byte_with_enable_low = byte;
         let byte_with_enable_high = byte | ENABLE;
 
-        i2c::send(&mut self.i2c, self.addr, &[byte_with_enable_high])?;
+        i2c::write(&mut self.i2c, self.address, &[byte_with_enable_high])?;
 
         Timer::after(Duration::from_micros(50)).await;
 
-        i2c::send(&mut self.i2c, self.addr, &[byte_with_enable_low])?;
+        i2c::write(&mut self.i2c, self.address, &[byte_with_enable_low])?;
 
         Timer::after(Duration::from_micros(100)).await;
 

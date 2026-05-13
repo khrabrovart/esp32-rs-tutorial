@@ -1,7 +1,7 @@
 use anyhow::Result;
 use esp_idf_svc::hal::delay::BLOCK;
 use esp_idf_svc::hal::gpio::{InputPin, OutputPin};
-use esp_idf_svc::hal::i2c::{config::Config, I2c, I2cDriver};
+use esp_idf_svc::hal::i2c::{I2c, I2cDriver, config::Config};
 use esp_idf_svc::hal::units::Hertz;
 
 pub fn init<'d>(
@@ -14,7 +14,7 @@ pub fn init<'d>(
     Ok(I2cDriver::new(i2c, sda, scl, &config)?)
 }
 
-pub fn send(i2c: &mut I2cDriver<'_>, addr: u8, data: &[u8]) -> Result<()> {
-    i2c.write(addr, data, BLOCK)?;
+pub fn write(i2c: &mut I2cDriver<'_>, address: u8, data: &[u8]) -> Result<()> {
+    i2c.write(address, data, BLOCK)?;
     Ok(())
 }
