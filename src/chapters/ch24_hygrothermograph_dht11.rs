@@ -22,12 +22,12 @@ pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State>
 
     Ok(State {
         dht_pin,
-        last_update: Instant::now() - READ_INTERVAL,
+        last_update: Instant::now(),
     })
 }
 
 pub async fn update(state: &mut State) -> Result<()> {
-    if (Instant::now() - state.last_update) < READ_INTERVAL {
+    if state.last_update.elapsed() < READ_INTERVAL {
         return Ok(());
     }
 

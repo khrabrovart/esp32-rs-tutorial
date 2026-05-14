@@ -61,7 +61,7 @@ pub async fn update(state: &mut State) -> Result<()> {
 }
 
 async fn update_count(state: &mut State) -> Result<bool> {
-    if (Instant::now() - state.last_count_update) < COUNT_UPDATE_INTERVAL {
+    if state.last_count_update.elapsed() < COUNT_UPDATE_INTERVAL {
         return Ok(false);
     }
 

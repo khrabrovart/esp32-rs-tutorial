@@ -96,7 +96,7 @@ pub async fn update(state: &mut State) -> Result<()> {
 }
 
 fn measure_temperature(state: &mut State) -> Result<()> {
-    if (Instant::now() - state.last_temperature_update) < TEMPERATURE_UPDATE_INTERVAL {
+    if state.last_temperature_update.elapsed() < TEMPERATURE_UPDATE_INTERVAL {
         return Ok(());
     }
 

@@ -56,8 +56,7 @@ pub async fn update(state: &mut State) -> Result<()> {
         return Ok(());
     }
 
-    let should_advance =
-        Instant::now().saturating_duration_since(state.last_advance) >= state.step_interval;
+    let should_advance = state.last_advance.elapsed() >= state.step_interval;
 
     if should_advance {
         advance_led(state)?;

@@ -63,7 +63,7 @@ pub async fn update(state: &mut State) -> Result<()> {
 }
 
 async fn update_motor_speed(state: &mut State) -> Result<()> {
-    if (Instant::now() - state.last_motor_speed_update) < MOTOR_SPEED_UPDATE_INTERVAL {
+    if state.last_motor_speed_update.elapsed() < MOTOR_SPEED_UPDATE_INTERVAL {
         return Ok(());
     }
 

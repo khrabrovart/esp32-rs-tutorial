@@ -9,6 +9,8 @@ use std::sync::Arc;
 
 pub const PROJECT_NAME: &str = "ch27_ble_server";
 
+const UPDATE_INTERVAL: Duration = Duration::from_secs(1);
+
 pub struct State {
     notifying_characteristic: Arc<Mutex<BLECharacteristic>>,
     counter: u32,
@@ -91,7 +93,7 @@ pub async fn setup(_peripherals: Peripherals, _spawner: Spawner) -> Result<State
 }
 
 pub async fn update(state: &mut State) -> Result<()> {
-    if state.last_update.elapsed() < Duration::from_secs(1) {
+    if state.last_update.elapsed() < UPDATE_INTERVAL {
         return Ok(());
     }
 

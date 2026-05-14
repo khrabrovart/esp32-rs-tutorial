@@ -50,7 +50,7 @@ pub async fn update(state: &mut State) -> Result<()> {
 }
 
 async fn update_distance(state: &mut State) -> Result<()> {
-    if (Instant::now() - state.last_distance_update) < DISTANCE_UPDATE_INTERVAL {
+    if state.last_distance_update.elapsed() < DISTANCE_UPDATE_INTERVAL {
         return Ok(());
     }
 
