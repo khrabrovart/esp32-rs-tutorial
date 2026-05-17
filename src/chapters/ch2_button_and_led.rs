@@ -3,6 +3,8 @@ use embassy_executor::Spawner;
 use esp_idf_svc::hal::gpio::{Input, Output, PinDriver, Pull};
 use esp_idf_svc::hal::peripherals::Peripherals;
 
+use crate::utils::button;
+
 pub const PROJECT_NAME: &str = "ch2_button_and_led";
 
 pub struct State {
@@ -20,15 +22,11 @@ pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State>
 }
 
 pub async fn update(state: &mut State) -> Result<()> {
-    if button_pressed(state) {
+    if button::check_pressed(&state.btn_pin).await {
         state.led_pin.set_high()?;
     } else {
         state.led_pin.set_low()?;
     }
 
     Ok(())
-}
-
-fn button_pressed(state: &State) -> bool {
-    !state.btn_pin.is_high()
 }
