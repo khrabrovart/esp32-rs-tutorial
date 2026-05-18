@@ -1,25 +1,31 @@
 use anyhow::Result;
 use core::convert::TryInto;
 use embassy_executor::Spawner;
-use esp_idf_svc::eventloop::EspSystemEventLoop;
+use esp_idf_svc::eventloop::{EspSubscription, EspSystemEventLoop, System};
 use esp_idf_svc::hal::peripherals::Peripherals;
 use esp_idf_svc::nvs::EspDefaultNvsPartition;
-use esp_idf_svc::wifi::{
-    AccessPointConfiguration, AuthMethod, BlockingWifi, Configuration, EspWifi,
-};
+use esp_idf_svc::wifi::AccessPointConfiguration;
+use esp_idf_svc::wifi::{AuthMethod, BlockingWifi, Configuration, EspWifi, WifiEvent};
 
 pub const PROJECT_NAME: &str = "ch32_wifi_ap";
 
 const WIFI_SSID: &str = "ESP32-AP";
-const WIFI_PASSWORD: &str = "123esp";
+const WIFI_PASSWORD: &str = "123esp123";
 
 pub struct State {
     _wifi: BlockingWifi<EspWifi<'static>>,
+    _wifi_events: EspSubscription<'static, System>,
 }
 
 pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State> {
     let sys_loop = EspSystemEventLoop::take()?;
     let nvs = EspDefaultNvsPartition::take()?;
+
+    let wifi_events = sys_loop.subscribe::<WifiEvent, _>(|event| match event {
+        WifiEvent::ApStaConnected(sta) => log::info!("Device connected: {sta:?}"),
+        WifiEvent::ApStaDisconnected(sta) => log::info!("Device disconnected: {sta:?}"),
+        _ => {}
+    })?;
 
     let mut wifi = BlockingWifi::wrap(
         EspWifi::new(peripherals.modem, sys_loop.clone(), Some(nvs))?,
@@ -47,7 +53,10 @@ pub async fn setup(peripherals: Peripherals, _spawner: Spawner) -> Result<State>
         ip_info.subnet.mask
     );
 
-    Ok(State { _wifi: wifi })
+    Ok(State {
+        _wifi: wifi,
+        _wifi_events: wifi_events,
+    })
 }
 
 pub async fn update(_state: &mut State) -> Result<()> {
