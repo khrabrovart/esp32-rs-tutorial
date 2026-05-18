@@ -1,4 +1,4 @@
-use esp32_tutorial::ch32_wifi_ap::{PROJECT_NAME, setup, update};
+use esp32_tutorial::ch32_wifi_ap_station::{PROJECT_NAME, setup, update};
 
 use anyhow::Result;
 use embassy_executor::Spawner;

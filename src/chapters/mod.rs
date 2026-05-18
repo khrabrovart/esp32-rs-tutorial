@@ -22,4 +22,5 @@ pub mod ch27_ble_advert_send;
 pub mod ch27_ble_server;
 
 pub mod ch32_wifi_ap;
+pub mod ch32_wifi_ap_station;
 pub mod ch32_wifi_station;
